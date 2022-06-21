@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class CurrentProject {
     public static Project CurrentProject;
-    public static List<Group> Groups;
+    public static List<Page> Pages;
     public static MutableLiveData<Boolean> isProjectLoaded=new MutableLiveData<>(false);
     public static void loadFirstProject(){
         List<Project> projects =DatabaseManager.getOrderedProjects();
@@ -26,38 +26,24 @@ public class CurrentProject {
         loadProject(p,true);
     }
     public static void loadProject(Project project,boolean updateDb){
-        if(CurrentProject!=null){
-            for (Group g :Groups)
+       /* if(CurrentProject!=null){
+            for (Page g :Pages)
                 g.unloadStoredViews();
-        }
+        }*/
 
         CurrentProject=project;
         project.updateLastAccessed();
         if(updateDb)
             DatabaseManager.db.update(project);
-        Groups= DatabaseManager.db.getProjectGroups(project.id);
-        Collections.sort(Groups,(a,b)->a.index-b.index);
-        System.out.println("How many groups does this project have: "+Groups.size());
-        for (Group g : Groups) {
-            g.getKeybinds();
+        Pages= DatabaseManager.db.getProjectPages(project.id);
+        Collections.sort(Pages,(a,b)->a.index-b.index);
+        System.out.println("How many groups does this project have: "+Pages.size());
+        /*for (Page g : Pages) {
             System.out.println(g);
-        }
+        }*/
         isProjectLoaded.setValue(true);
     }
-  /*  public static void newProject(){
-        List<Project> p= DatabaseManager.db.getProjects();
-        String s="Unnamed Project";
-        if(!isProjectNameAvailable(p,s)){
-            int i = 1;
-            while (!isProjectNameAvailable(p,s+" ("+i+")"))
-                i++;
-            s=s+" ("+i+")";
-        }
-        Project np=new Project();
-        np.name=s;
-        np.id= DatabaseManager.db.insert(np);
-        loadProject(np,);
-    }*/
+
     public static boolean isProjectNameAvailable(List<Project> projects,String name){
         for (Project p:projects) {
             if(p.name.equals(name))
@@ -107,13 +93,13 @@ public class CurrentProject {
         return n+" "+i;
     }
 
-    public static Group AddGroup(){
-        Group g=new Group();
-        Groups.add(g);
-        g.projectID=CurrentProject.id;
-        g.index=Groups.size()-1;
-        g.name= getFirstGroupUnnamed("Unnamed Group");
-        g.id= DatabaseManager.db.insert(g);
+    public static Page AddPage(){
+        Page p=new Page();
+        Pages.add(p);
+        p.projectID=CurrentProject.id;
+        p.index=Pages.size()-1;
+        p.name= getFirstGroupUnnamed("Unnamed Group");
+        p.id= DatabaseManager.db.insert(p);
         return g;
     }
 

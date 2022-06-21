@@ -21,10 +21,20 @@ public interface ProjectDao {
     void delete(Project p);
     @Insert
     long insert(Project p);
+//pages
+    @Query("Select * from Page where projectID=:id")
+    List<Page> getProjectPages(long id);
+    @Insert
+    long insert(Page p);
+    @Update
+    void update(Page p);
+    @Delete
+    void delete(Page p);
 
 //groups
-    @Query("Select * from `Group` Where projectID=:id")
-    List<Group> getProjectGroups(long id);
+    @Query("Select * from `Group` Where pageID=:id")
+    List<Group> getPageGroups(long id);
+
     @Query("Select * from `Group`")
     List<Group> getGroups();
 
@@ -34,8 +44,8 @@ public interface ProjectDao {
     void deleteGroup(long id);
     @Insert
     long insert(Group g);
-    @Query("delete from `group` where projectID=:id")
-    void deleteAllProjectsGroups(long id);
+    @Query("delete from `group` where pageID=:id")
+    void deleteAllPageGroups(long id);
 
 //keybinds
     @Query("Select * from keybind")

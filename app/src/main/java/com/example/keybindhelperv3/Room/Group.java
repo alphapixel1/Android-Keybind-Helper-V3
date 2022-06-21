@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Entity(foreignKeys = {@ForeignKey(entity = Project.class,
+@Entity(foreignKeys = {@ForeignKey(entity = Page.class,
         parentColumns = "id",
-        childColumns = "projectID",
+        childColumns = "pageID",
         onDelete = ForeignKey.CASCADE)
 })
 public class Group {
@@ -26,8 +26,8 @@ public class Group {
     @ColumnInfo
     public String name;
 
-    @ColumnInfo(name="projectID")
-    public long projectID;
+    @ColumnInfo(name="pageID")
+    public long pageID;
 
     @ColumnInfo(name="index")
     public int index;
@@ -90,7 +90,7 @@ public class Group {
         Group ret = new Group();
         ret.name = CurrentProject.getFirstGroupUnnamed(name);
         CurrentProject.Groups.add(ret);
-        ret.projectID = projectID;
+        ret.pageID = pageID;
         ret.index = CurrentProject.Groups.size() - 1;
         ret.id = DatabaseManager.db.insert(ret);
         if (keybinds != null) {
@@ -108,7 +108,7 @@ public class Group {
         return "Group{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", projectID=" + projectID +
+                ", pageID=" + pageID +
                 ", index=" + index +
                 ", keybinds=" + keybinds.size() +
                 '}';
